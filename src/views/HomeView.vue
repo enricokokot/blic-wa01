@@ -11,7 +11,6 @@
 
 <script>
 // @ is an alias to /src
-import axios from "axios";
 import store from "@/store";
 
 export default {
@@ -24,6 +23,11 @@ export default {
   methods: {
     setBook(book) {
       store.currentBook = book;
+    },
+    async getBooks() {
+      await fetch("http://ntankovic.unipu.hr:8000/api/books")
+        .then((response) => response.json())
+        .then((data) => (this.books2 = data));
     },
   },
   data: () => ({
@@ -4892,10 +4896,5 @@ export default {
       },
     ],
   }),
-  created() {
-    axios.get("http://ntankovic.unipu.hr:8000/api/books").then((response) => {
-      console.log(response);
-    });
-  },
 };
 </script>
