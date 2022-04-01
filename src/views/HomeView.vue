@@ -1,21 +1,29 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <p v-for="book in books" :key="book.isbn">
-      {{ book.name }}, {{ book.authors[0] }}, {{ book.released }}
-    </p>
+    <li v-for="book in topTenBooks" :key="book.isbn" @click="setBook(book)">
+      <router-link to="/about"
+        >{{ book.name }}, {{ book.authors[0] }},
+        {{ book.released }}</router-link
+      >
+    </li>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import store from "@/store";
 
 export default {
   name: "HomeView",
   computed: {
     topTenBooks: function () {
       return this.books.slice(0, 10);
+    },
+  },
+  methods: {
+    setBook(book) {
+      store.currentBook = book;
     },
   },
   data: () => ({
@@ -4885,7 +4893,7 @@ export default {
     ],
   }),
   created() {
-    axios.get("http://cantab.elaclo.com:8000/books.json").then((response) => {
+    axios.get("http://ntankovic.unipu.hr:8000/api/books").then((response) => {
       console.log(response);
     });
   },
